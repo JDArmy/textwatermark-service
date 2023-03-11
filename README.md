@@ -48,6 +48,8 @@ Visit `http://0.0.0.0:8000/docs` and you will see swagger UI.
 
 ### Create worker
 
+The params JSON string is the same as what you exported by using `TextWatermark` package in the console. see <https://textwatermark.jd.army/cmdline/#export-parameters-example>
+
 ```sh
 curl -X 'POST' \
   'http://0.0.0.0:8000/worker/create?authorize_key=d0f4ac8c14eae3a992aa574a55099e4f' \
