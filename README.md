@@ -1,7 +1,7 @@
 
 # TextWatermark Service
 
-An HTTP Service for using `TextWatermark` module to watermark text.
+An HTTP Service for using [TextWatermark](https://github.com/JDArmy/TextWatermark) module to watermark text.
 
 Based on Fastapi.
 
@@ -29,11 +29,16 @@ tox
 
 ### Run uvicorn
 
-run `python src/textwatermark_service/run.py`
+Run `python src/textwatermark_service/run.py`
 
-or run
+Or run `uvicorn textwatermark_service.main:app --port 8000 --reload`
 
-`uvicorn textwatermark_service.main:app --port 8000 --reload`
+## Usage
+
+There are 2 steps for using textwatermark-service
+
+1. Create a worker when you want to watermark some text.
+2. Do the watermarking job with the worker you created.
 
 ## Use Swagger UI for testing
 
