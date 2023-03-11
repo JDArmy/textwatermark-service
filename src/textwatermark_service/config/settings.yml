@@ -1,0 +1,14 @@
+debug: false
+authorize_key:
+postgres_host: postgres
+postgres_port: 5432
+postgres_db: textwatermark
+postgres_password: textwatermark
+postgres_user: textwatermark
+sqlite_path: /tmp/textwatermark_service.db
+# settings for log
+
+logenabled: false
+# DEBUG:10, INFO:20, WARNING:30, ERROR:40, CRITICAL:50
+loglevel: 10
+logpath: /tmp/textwatermark_service_log

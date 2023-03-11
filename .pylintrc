@@ -1,0 +1,5 @@
+[MASTER]
+extension-pkg-whitelist=pydantic
+ignore=CVS,db
+jobs=3
+init-hook='import sys,os; sys.path.append(os.path.abspath("./venv/lib/python3.10/site-packages"))'
