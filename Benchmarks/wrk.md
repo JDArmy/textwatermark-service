@@ -54,10 +54,10 @@ Requests/sec:   1163.60
 Transfer/sec:    532.94KB
 ```
 
-## wrk -d 30s -t 4 -c 8  --latency 'http://0.0.0.0:8000/job/4904/redo?authorize_key=d0f4ac8c14eae3a992aa574a55099e4f'
+## wrk -d 30s -t 4 -c 8  --latency 'http://0.0.0.0:8000/worker/65542/job/4904/redo?authorize_key=d0f4ac8c14eae3a992aa574a55099e4f'
 
 ```
-Running 30s test @ http://0.0.0.0:8000/job/4904/redo?authorize_key=d0f4ac8c14eae3a992aa574a55099e4f
+Running 30s test @ http://0.0.0.0:8000/worker/65542/job/4904/redo?authorize_key=d0f4ac8c14eae3a992aa574a55099e4f
   4 threads and 8 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
     Latency     2.94ms    2.36ms  54.25ms   93.80%
@@ -73,10 +73,10 @@ Requests/sec:   2937.29
 Transfer/sec:    530.66KB
 ```
 
-## wrk -d 30s -t 4 -c 8  --latency 'http://0.0.0.0:8000/job/4904?authorize_key=d0f4ac8c14eae3a992aa574a55099e4f'
+## wrk -d 30s -t 4 -c 8  --latency 'http://0.0.0.0:8000/worker/65542/job/4904?authorize_key=d0f4ac8c14eae3a992aa574a55099e4f'
 
 ```
-Running 30s test @ http://0.0.0.0:8000/job/4904?authorize_key=d0f4ac8c14eae3a992aa574a55099e4f
+Running 30s test @ http://0.0.0.0:8000/worker/65542/job/4904?authorize_key=d0f4ac8c14eae3a992aa574a55099e4f
   4 threads and 8 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
     Latency    20.87ms   15.47ms 174.27ms   87.23%

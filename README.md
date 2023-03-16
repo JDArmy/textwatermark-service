@@ -1,7 +1,7 @@
 
 # TextWatermark Service
 
-An HTTP Service for using [TextWatermark](https://github.com/JDArmy/TextWatermark) module to watermark text.
+An HTTP Service for using the [TextWatermark](https://github.com/JDArmy/TextWatermark) module to watermark text.
 
 Based on Fastapi.
 
@@ -10,30 +10,9 @@ Based on Fastapi.
 Modify Dockerfile and docker-compose.yml then run
 `docker-compose -f docker-compose.yml up`
 
-## Developing and Testing
-
-### Install dependencies
-
-```bash
-code .
-
-virtualenv venv
-. venv/bin/activate
-
-pip install poetry
-poetry lock
-poetry install
-
-tox
-```
-
-### Run uvicorn
-
-Run `uvicorn textwatermark_service.main:app --port 8000 --reload`
-
 ## Usage
 
-There are 2 steps for using textwatermark-service
+There are 2 steps for using `textwatermark-service`
 
 1. Create a worker when you want to watermark some text.
 2. Do the watermarking job with the worker you created.
@@ -46,7 +25,7 @@ Visit `http://0.0.0.0:8000/docs` and you will see swagger UI.
 
 ### Create worker
 
-The params JSON string is the same as what you exported by using `TextWatermark` package in the console. see <https://textwatermark.jd.army/cmdline/#export-parameters-example>
+The params JSON string is the same as what you exported by using the `TextWatermark` package in the console. see <https://textwatermark.jd.army/cmdline/#export-parameters-example>
 
 ```sh
 curl -X 'POST' \
@@ -181,6 +160,27 @@ Result:
   }
 }
 ```
+
+## Developing and Testing
+
+### Install dependencies
+
+```bash
+code .
+
+virtualenv venv
+. venv/bin/activate
+
+pip install poetry
+poetry lock
+poetry install
+
+tox
+```
+
+### Run `uvicorn`
+
+Run `uvicorn textwatermark_service.main:app --port 8000 --reload`
 
 ## Use `wrk` for benchmarks
 
