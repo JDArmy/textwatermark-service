@@ -33,10 +33,22 @@ curl -X 'POST' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
-  "params": {"tpl_type": "HOMOGRAPH_NUMBERS", "confusables_chars": [], "confusables_chars_key": "", "wm_base": 7, "method": 1, "wm_mode": 1, "wm_len": 8, "wm_flag_bit": false, "wm_loop": false, "wm_max": "999999", "start_at": 0, "version": "0.2.1"},
-  "use_job_id": false,
-  "text": "1234567890123456789012345678901234567890",
-  "created": "2023-03-11T14:40:44.429172"
+  "params": {
+    "tpl_type": "INVISIBLE_CHARS",
+    "confusables_chars": [],
+    "confusables_chars_key": "",
+    "wm_base": 29,
+    "method": "INSERT_INTO_POSITION",
+    "wm_mode": "REAL_NUMBER",
+    "wm_len": 5,
+    "wm_flag_bit": true,
+    "wm_loop": false,
+    "wm_max": "99999",
+    "start_at": 1,
+    "version": "0.3.2"
+  },
+  "use_job_id": true,
+  "text": "12345678901"
 }'
 ```
 
@@ -52,10 +64,10 @@ Result:
 
 ```sh
 curl -X 'POST' \
-  'http://0.0.0.0:8000/worker/65542/do_job?authorize_key=d0f4ac8c14eae3a992aa574a55099e4f' \
+  'http://0.0.0.0:8000/worker/1/do_job?authorize_key=d0f4ac8c14eae3a992aa574a55099e4f' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/x-www-form-urlencoded' \
-  -d 'wm_str=888888'
+  -d 'wm_str='
 ```
 
 Result:
@@ -73,7 +85,7 @@ Result:
 
 ```sh
 curl -X 'GET' \
-  'http://0.0.0.0:8000/worker/65542?authorize_key=d0f4ac8c14eae3a992aa574a55099e4f' \
+  'http://0.0.0.0:8000/worker/10000?authorize_key=d0f4ac8c14eae3a992aa574a55099e4f' \
   -H 'accept: application/json'
 ```
 
@@ -106,7 +118,7 @@ Result:
 
 ```sh
 curl -X 'POST' \
-  'http://0.0.0.0:8000/job/4904/redo?authorize_key=d0f4ac8c14eae3a992aa574a55099e4f' \
+  'http://0.0.0.0:8000/worker/1/job/1/redo?authorize_key=d0f4ac8c14eae3a992aa574a55099e4f' \
   -H 'accept: application/json' \
   -d ''
 ```
@@ -126,7 +138,7 @@ Result:
 
 ```sh
 curl -X 'GET' \
-  'http://0.0.0.0:8000/job/4904?authorize_key=d0f4ac8c14eae3a992aa574a55099e4f' \
+  'http://0.0.0.0:8000/worker/1/job/1?authorize_key=d0f4ac8c14eae3a992aa574a55099e4f' \
   -H 'accept: application/json'
 ```
 

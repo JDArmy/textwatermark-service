@@ -18,7 +18,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    restart: on-failure:10
+    restart: on-failure:100
     volumes:
       - ./src/textwatermark_service:/code/textwatermark_service
       - ./src/static:/code/static

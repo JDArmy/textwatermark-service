@@ -25,10 +25,9 @@ else:
         + f"@{postgres_host}:{postgres_port}/{postgres_db}"
     )
 
-    print("*****", "DB Connect String", SQLALCHEMY_DATABASE_URL)
+    # print("*****", "DB Connect String", SQLALCHEMY_DATABASE_URL)
 
     engine = create_engine(SQLALCHEMY_DATABASE_URL)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
 Base: Any = declarative_base()
