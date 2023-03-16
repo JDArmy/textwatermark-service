@@ -17,7 +17,7 @@ services:
       - postgres
     build:
       context: .
-      dockerfile: DockerFile.dev
+      dockerfile: Dockerfile.dev
     restart: on-failure:10
     volumes:
       - ./src/textwatermark_service:/code/textwatermark_service
