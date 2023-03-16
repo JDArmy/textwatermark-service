@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.docs import get_swagger_ui_html
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
-from textwatermark import __version__
+from textwatermark.version import __version__
 
 from . import crud
 from .config import settings
@@ -84,12 +84,10 @@ def create_worker(
     """Insert worker params to db and get worker id."""
     check_authorize_key(authorize_key)
 
-    if worker.params.version != __version__:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Invalid version: {worker.params.version}:"
-            f"expected {__version__}",
-        )
+    if not worker.text:
+        raise HTTPException(status_code=400, detail="text is required for watermark")
+
+    crud.check_params(worker.params, worker.text, worker.use_job_id)
 
     db_worker = crud.create_worker(db=db, worker=worker)
     return {"worker_id": db_worker.id}
@@ -97,7 +95,7 @@ def create_worker(
 
 @app.post("/worker/{worker_id}/do_job")
 def do_job_as_worker(
-    wm_str: str = Form(max_length=1024),
+    wm_str: str = Form(max_length=1024, default=""),
     worker_id: int = Path(title="The ID of the worker to get", ge=1),
     authorize_key: str = Query(default=None),
     db: Session = Depends(get_db),
@@ -105,12 +103,16 @@ def do_job_as_worker(
     """Do text watermark with watermark string"""
     check_authorize_key(authorize_key)
 
-    db_worker = crud.get_worker(worker_id)
+    db_worker = crud.get_worker(db, worker_id)
     if db_worker is None:
         raise HTTPException(status_code=404, detail="Worker not found")
 
-    job = schemas.JobCreate(worker_id=worker_id, wm_str=wm_str)
+    last_job_id = db_worker.last_job_id + 1
+
+    job = schemas.JobCreate(id=last_job_id, worker_id=worker_id, wm_str=wm_str)
     db_job = crud.create_job(db=db, job=job)
+
+    crud.save_last_job_id(db=db, worker_id=db_worker.id, last_job_id=last_job_id)
 
     return crud.insert_watermark(job=db_job, worker=db_worker)
 
@@ -119,20 +121,21 @@ def do_job_as_worker(
 def get_worker_info(
     worker_id: int = Path(title="The ID of the worker to get", ge=1),
     authorize_key: str = Query(default=None),
+    db: Session = Depends(get_db),
 ):
     """Get worker info from worker id"""
     check_authorize_key(authorize_key)
-    # start = time.time()
-    db_worker = crud.get_worker(worker_id)
+
+    db_worker = crud.get_worker(db, worker_id)
     if db_worker is None:
         raise HTTPException(status_code=404, detail="Worker not found")
-    # print((time.time() - start) * 1000, crud.get_worker.cache_info())
 
     return db_worker
 
 
-@app.post("/job/{job_id}/redo")
+@app.post("/worker/{worker_id}/job/{job_id}/redo")
 def redo_job(
+    worker_id: int = Path(title="The ID of the worker to get", ge=1),
     job_id: int = Path(title="The ID of the job to get", ge=1),
     authorize_key: str = Query(default=None),
     db: Session = Depends(get_db),
@@ -143,7 +146,7 @@ def redo_job(
     information you retrieved is correct"""
     check_authorize_key(authorize_key)
 
-    db_job = crud.get_job(db, job_id)
+    db_job = crud.get_job(db=db, worker_id=worker_id, job_id=job_id)
     if db_job is None:
         raise HTTPException(status_code=404, detail="Job not found")
 
@@ -152,8 +155,9 @@ def redo_job(
     )
 
 
-@app.get("/job/{job_id}")
+@app.get("/worker/{worker_id}/job/{job_id}")
 def get_job_info(
+    worker_id: int = Path(title="The ID of the worker to get", ge=1),
     job_id: int = Path(title="The ID of the job to get", ge=1),
     authorize_key: str = Query(default=None),
     db: Session = Depends(get_db),
@@ -161,7 +165,7 @@ def get_job_info(
     """Get the job information"""
     check_authorize_key(authorize_key)
 
-    db_job = crud.get_job(db, job_id)
+    db_job = crud.get_job(db=db, worker_id=worker_id, job_id=job_id)
     if db_job is None:
         raise HTTPException(status_code=404, detail="Job not found")
     return db_job

@@ -6,9 +6,12 @@ postgres_db: textwatermark
 postgres_password: textwatermark
 postgres_user: textwatermark
 sqlite_path: /tmp/textwatermark_service.db
-# settings for log
 
+# settings for log
 logenabled: false
-# DEBUG:10, INFO:20, WARNING:30, ERROR:40, CRITICAL:50
 loglevel: 10
+# DEBUG:10, INFO:20, WARNING:30, ERROR:40, CRITICAL:50
 logpath: /tmp/textwatermark_service_log
+
+# other config
+max_job_id: 99999

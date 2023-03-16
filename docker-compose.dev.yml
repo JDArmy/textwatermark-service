@@ -1,6 +1,5 @@
-version: '3'
+version: "3"
 services:
-
   postgres:
     image: postgres
     volumes:
@@ -13,13 +12,12 @@ services:
     ports:
       - 5432:5432
 
-
   fastapi:
     depends_on:
       - postgres
     build:
-      context: ./docker
-      dockerfile: ./docker/DockerFile
+      context: .
+      dockerfile: DockerFile.dev
     restart: on-failure:10
     volumes:
       - ./src/textwatermark_service:/code/textwatermark_service
@@ -28,11 +26,9 @@ services:
       - 8000:8000
     environment:
       WAIT_HOSTS: postgres:5432
-      TEXTWATERMARKSERV_AUTHORIZE_KEY: d0f4ac8c14eae3a992aa574a55099e4f
+      TEXTWATERMARKSERV_AUTHORIZE_KEY:
       TEXTWATERMARKSERV_POSTGRES_HOST: postgres
       TEXTWATERMARKSERV_POSTGRES_PORT: 5432
       TEXTWATERMARKSERV_POSTGRES_DB: textwatermark
       TEXTWATERMARKSERV_POSTGRES_PASSWORD: textwatermark
       TEXTWATERMARKSERV_POSTGRES_USER: textwatermark
-
- 

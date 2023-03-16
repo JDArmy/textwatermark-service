@@ -29,9 +29,7 @@ tox
 
 ### Run uvicorn
 
-Run `python src/textwatermark_service/run.py`
-
-Or run `uvicorn textwatermark_service.main:app --port 8000 --reload`
+Run `uvicorn textwatermark_service.main:app --port 8000 --reload`
 
 ## Usage
 
@@ -184,6 +182,6 @@ Result:
 }
 ```
 
-## Use wrk for benchmarks
+## Use `wrk` for benchmarks
 
 see `wrk.md` in `Benchmarks` Directory.
