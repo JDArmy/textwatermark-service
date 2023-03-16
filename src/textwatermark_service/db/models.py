@@ -16,7 +16,7 @@ class Worker(Base):
     id = Column(Integer, autoincrement=True, primary_key=True, index=True)
     params = Column(JSON)
     use_job_id = Column(Boolean)
-    last_job_id = Column(Integer)
+    last_job_id = Column(Integer, default=0)
     text = Column(String(65535))
     created = Column(DateTime)
 

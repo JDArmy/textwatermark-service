@@ -33,8 +33,7 @@ app.add_middleware(
 
 app.mount(
     "/static",
-    StaticFiles(directory=os.path.abspath(
-        os.path.dirname(__file__) + "/../static")),
+    StaticFiles(directory=os.path.abspath(os.path.dirname(__file__) + "/../static")),
     name="static",
 )
 
@@ -86,8 +85,7 @@ def create_worker(
     check_authorize_key(authorize_key)
 
     if not worker.text:
-        raise HTTPException(
-            status_code=400, detail="text is required for watermark")
+        raise HTTPException(status_code=400, detail="text is required for watermark")
 
     crud.check_params(worker.params, worker.text, worker.use_job_id)
 
@@ -110,7 +108,8 @@ def do_job_as_worker(
         raise HTTPException(status_code=404, detail="Worker not found")
 
     job = schemas.JobCreate(
-        id=db_worker.last_job_id, worker_id=worker_id, wm_str=wm_str)
+        id=db_worker.last_job_id, worker_id=worker_id, wm_str=wm_str
+    )
     db_job = crud.create_job(db=db, job=job)
 
     return crud.insert_watermark(job=db_job, worker=db_worker)

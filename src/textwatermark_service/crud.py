@@ -8,20 +8,22 @@ from sqlalchemy.orm import Session
 from textwatermark import TextWatermark
 from textwatermark.version import __version__
 
-from textwatermark_service.db.database import SessionLocal
-
 from .db import models, schemas
 
 
 def get_worker_last_job_id(db: Session, worker_id: int):
     """Get last job id from db"""
     db.commit()
-    db_worker = db.query(models.Worker).with_for_update().filter(
-        models.Worker.id == worker_id).first()
+    db_worker = (
+        db.query(models.Worker)
+        .with_for_update()
+        .filter(models.Worker.id == worker_id)
+        .first()
+    )
     if not db_worker:
-        return 0
+        return None
 
-    db_worker.last_job_id += 1
+    db_worker.last_job_id = (db_worker.last_job_id or 0) + 1
     db.commit()
     db.refresh(db_worker)
     return db_worker
@@ -29,8 +31,7 @@ def get_worker_last_job_id(db: Session, worker_id: int):
 
 def get_worker(db: Session, worker_id: int):
     """Get worker from db"""
-    db_worker = db.query(models.Worker).filter(
-        models.Worker.id == worker_id).first()
+    db_worker = db.query(models.Worker).filter(models.Worker.id == worker_id).first()
     return db_worker
 
 
@@ -114,5 +115,4 @@ def check_params(
         raise HTTPException(status_code=500, detail=str(err)) from err
 
     if not enough:
-        raise HTTPException(
-            status_code=400, detail="Not enough space for watermark")
+        raise HTTPException(status_code=400, detail="Not enough space for watermark")

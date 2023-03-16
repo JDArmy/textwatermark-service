@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "textwatermark-service"
-version = "0.2.0"
+version = "0.2.1"
 description = ""
 authors = ["Monyer <monyer@126.com>"]
 readme = "README.md"

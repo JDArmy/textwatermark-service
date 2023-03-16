@@ -1,5 +1,5 @@
 """TextWatermark Service"""
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 
 from . import log
 from .config import settings
