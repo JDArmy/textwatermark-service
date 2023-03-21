@@ -180,4 +180,4 @@ venv.bak/
 **/*.local.yml
 **/.secrets.yml
 
-pgdata/
+data/

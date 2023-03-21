@@ -64,7 +64,7 @@ def get_db():
         db.close()
 
 
-@lru_cache(maxsize=3)
+@lru_cache(maxsize=2)
 def check_authorize_key(authorize_key):
     """check authorize key"""
     if settings.AUTHORIZE_KEY and str(authorize_key) != str(settings.AUTHORIZE_KEY):
@@ -103,13 +103,12 @@ def do_job_as_worker(
     """Do text watermark with watermark string"""
     check_authorize_key(authorize_key)
 
-    db_worker = crud.get_worker_last_job_id(db, worker_id)
+    db_worker = crud.get_worker(worker_id)
     if db_worker is None:
         raise HTTPException(status_code=404, detail="Worker not found")
 
-    job = schemas.JobCreate(
-        id=db_worker.last_job_id, worker_id=worker_id, wm_str=wm_str
-    )
+    last_job_id = crud.get_last_job_id(worker_id)
+    job = schemas.JobCreate(id=last_job_id, worker_id=worker_id, wm_str=wm_str)
     db_job = crud.create_job(db=db, job=job)
 
     return crud.insert_watermark(job=db_job, worker=db_worker)
@@ -119,12 +118,11 @@ def do_job_as_worker(
 def get_worker_info(
     worker_id: int = Path(title="The ID of the worker to get", ge=1),
     authorize_key: str = Query(default=None),
-    db: Session = Depends(get_db),
 ):
     """Get worker info from worker id"""
     check_authorize_key(authorize_key)
 
-    db_worker = crud.get_worker(db, worker_id)
+    db_worker = crud.get_worker(worker_id)
     if db_worker is None:
         raise HTTPException(status_code=404, detail="Worker not found")
 

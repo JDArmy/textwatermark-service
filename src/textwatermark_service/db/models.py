@@ -1,8 +1,6 @@
 """Models"""
 # pylint: disable=too-few-public-methods
 
-from typing import Any
-
 from sqlalchemy import JSON, Boolean, Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, relationship
 
@@ -21,6 +19,16 @@ class Worker(Base):
     created = Column(DateTime)
 
     jobs: Mapped["Job"] = relationship("Job", back_populates="worker")
+
+    # def as_dict(self):
+    #     return {
+    #         "id": self.id,
+    #         "params": self.params,
+    #         "use_job_id": self.use_job_id,
+    #         "last_job_id": self.last_job_id,
+    #         "text": self.text,
+    #         "created": self.created.__str__(),
+    #     }
 
 
 class Job(Base):

@@ -2,6 +2,7 @@
 # pylint: disable=invalid-name,too-many-function-args,pointless-statement
 
 from datetime import datetime
+from functools import lru_cache
 
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
@@ -9,28 +10,19 @@ from textwatermark import TextWatermark
 from textwatermark.version import __version__
 
 from .db import models, schemas
+from .db.database import SessionLocal
+from .db.redis import redis_db
 
 
-def get_worker_last_job_id(db: Session, worker_id: int):
+def get_last_job_id(worker_id: int):
     """Get last job id from db"""
-    db.commit()
-    db_worker = (
-        db.query(models.Worker)
-        .with_for_update()
-        .filter(models.Worker.id == worker_id)
-        .first()
-    )
-    if not db_worker:
-        return None
-
-    db_worker.last_job_id = (db_worker.last_job_id or 0) + 1
-    db.commit()
-    db.refresh(db_worker)
-    return db_worker
+    return int(redis_db.incr(str(worker_id)))
 
 
-def get_worker(db: Session, worker_id: int):
+@lru_cache(maxsize=128)
+def get_worker(worker_id: int):
     """Get worker from db"""
+    db = SessionLocal()
     db_worker = db.query(models.Worker).filter(models.Worker.id == worker_id).first()
     return db_worker
 
