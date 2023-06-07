@@ -18,7 +18,7 @@ sqlalchemy = "^2.0.4"
 textwatermark = "^0.3.2"
 uvicorn = "^0.20.0"
 gunicorn = "^20.1.0"
-redis = "^4.5.2"
+redis = "^4.5.4"
 
 
 [tool.poetry.group.dev.dependencies]
