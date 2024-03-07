@@ -12,7 +12,7 @@ packages = [{ include = "textwatermark_service", from = "src" }]
 python = "^3.10"
 dynaconf = "^3.1"
 fastapi = "^0.109.1"
-python-multipart = "^0.0.6"
+python-multipart = "^0.0.7"
 psycopg2-binary = "^2.9.5"
 sqlalchemy = "^2.0.4"
 textwatermark = "^0.3.2"
